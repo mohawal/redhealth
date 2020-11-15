@@ -1,4 +1,50 @@
+<?php
+session_start();
+include 'config.php';
 
+if (isset($_POST['submit'])) {
+	$name = $_POST['name'];
+	$phone =$_POST['phone'];
+	$email = $_POST['email'];
+	$symptoms = $_POST['symptoms'];
+	$date = $_POST['date'];
+	$service =$_POST['service'];
+	$gender =$_POST['gender'];
+	$time =$_POST['time'];
+
+	
+
+	if (empty($_POST['name']) || empty($_POST['phone']) || empty($_POST['email']) || empty($_POST['symptoms']) || empty($_POST['date']) || empty($_POST['service']) || empty($_POST['gender']) || empty($_POST['time']) ) {
+		$message='<div class="alert alert-danger">Please fill empty fields</div>';
+	} else{
+		$insert = "INSERT INTO tbl_appointments (id, name, phone, email, symptoms,date, service, gender, time) VALUES  (:id, :name, :phone, :email, :symptoms, :date, :service, :gender, :time)";
+
+		$query = $conn->prepare($insert);
+		$results = $query->execute(
+			array(
+			  ":id" => '',
+			  ":name" => $name,
+			  ":phone" => $phone,
+			  ":email" => $email,
+			  ":symptoms" => $symptoms,
+			  ":date" => $date,
+			  ":service" => $service,
+			  ":gender" => $gender,
+			  ":time" => $time
+			  
+			)
+		  );
+
+		  if($results == TRUE) {
+			$message='<div class="alert alert-success"> Your response has been received, we will get in touch with you.</div>';
+		  } else {
+			$message='<div class="alert alert-danger">There was an error</div>';
+		  }
+	}
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -27,10 +73,10 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 		<div class="header_agileinfo">
 						<div class="w3_agileits_header_text">
 							<ul class="top_agile_w3l_info_icons">
-									<li><i class="fa fa-home" aria-hidden="true"></i>Uit Burdwan,West Bengal.</li>
-									<li class="second"><i class="fa fa-phone" aria-hidden="true"></i>(+91) 9199642838</li>
+									<li><i class="fa fa-home" aria-hidden="true"></i>HOPin Academy, Water Works Road - Tamale.</li>
+									<li class="second"><i class="fa fa-phone" aria-hidden="true"></i>(+233) 545510351</li>
 									
-									<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:er.vikashs4@gmail.com">er.vikashs4@gmail.com</a></li>
+									<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:redhealthgtl@gmail.com">redhealthgtl@gmail.com</a></li>
 								</ul>
 
 						</div>
@@ -55,7 +101,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 					<span class="icon-bar"></span>
 				  </button>
 					<div class="logo">
-						<h3><a class="navbar-brand" href="index.html"> Avi-pra <p>Health Care 4U</p></a></h3>
+						<h3><a class="navbar-brand" href="index.html"> ReDHealth<p>ReDifined Digital Health</p></a></h3>
 					</div>
 				</div>
 
@@ -65,15 +111,17 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 					<ul id="m_nav_list" class="m_nav menu__list">
 						<li class="m_nav_item menu__item" id="m_nav_item_1"> <a href="index.html" class="menu__link"> Home </a></li>
 						<li class="m_nav_item menu__item" id="moble_nav_item_2"> <a href="about.html" class="menu__link"> About Us </a> </li>		
-						<li class="m_nav_item menu__item " id="moble_nav_item_4"> <a href="appointment.html" class="menu__link">Appointment  </a> </li>
-						<li class="m_nav_item menu__item" id="moble_nav_item_5"> <a href="gallery.html" class="menu__link">Departments</a> </li>
+						<li class="m_nav_item menu__item menu__item--current" id="moble_nav_item_4"> <a href="appointment.php" class="menu__link">Appointment  </a> </li>
+						<li class="m_nav_item menu__item" id="moble_nav_item_5"> <a href="ourservices.html" class="menu__link">Our Services</a> </li>
 						<li class="m_nav_item menu__item" id="moble_nav_item_6"> <a href="contact.html" class="menu__link"> Contact </a> </li>
-						<li class="m_nav_item menu__item menu__item--current" id="moble_nav_item_3 dropdown"> <a href="#" class="menu__link dropdown-toggle" data-toggle="dropdown">Patient-Login</a> 
-						   <!-- <ul class="dropdown-menu agile_short_dropdown">
-									<li><a href="login.php">Doctor </a></li>
-									<li><a href="login.php">Patient</a></li>
-									<li><a href="login.php">Admin</a></li>
-								</ul> -->
+						<li class="m_nav_item menu__item" id="moble_nav_item_3 dropdown"> <a href="#" class="menu__link dropdown-toggle" data-toggle="dropdown">User-Login  <b class="caret"></b></a> 
+						   <ul class="dropdown-menu agile_short_dropdown">
+							<li><a href="doctorlogin.php">Doctor </a></li>
+							<li><a href="nurselogin.php">Nurse</a></li>
+							<li><a href="pharmacistlogin.php">Pharmacist</a></li>
+							<li><a href="plogin.php">Patient</a></li>
+<!-- 									<li><a href="login.php">Admin</a></li> -->
+								</ul>
 						</li>
 					</ul>
 				</nav>
@@ -94,7 +142,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 		<div class="container">
 			<ul>
 				<li><a href="index.html">Home</a><i>|</i></li>
-				<li>Patient Login</li>
+				<li>Appointment</li>
 			</ul>
 		</div>
 	</div>
@@ -102,66 +150,60 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 <!-- icons -->
 	<div class="banner-bottom" id="about">
 		<div class="container">
-					<h2 class="w3_heade_tittle_agile">Login</h2>
-			        <p class="sub_t_agileits">Fill the Form</p>
+					<h2 class="w3_heade_tittle_agile">Appointment</h2>
+			        <p class="sub_t_agileits">FIll The Form</p>
 
 					<div class="book-appointment">
-						<h4>Login and Make an appointment</h4>
-								<form action="appointment" method="post">
+						<h4>Make an appointment</h4>
+								<form action=" " method="post">
+								<div class="alert"> <?php echo $message; ?> </div>
 								<div class="left-agileits-w3layouts same">
-								<!-- <div class="gaps">
+								<div class="gaps">
 									<p>Patient Name</p>
-										<input type="text" name="Patient Name" placeholder="" required=""/>
+										<input type="text" name="name" placeholder="" required=""/>
 								</div>	
 									<div class="gaps">	
 									<p>Phone Number</p>
-										<input type="text" name="Number" placeholder="" required=""/>
-									</div> -->
+										<input type="text" name="phone" placeholder="" required=""/>
+									</div>
 									<div class="gaps">
 									<p>Email</p>
 											<input type="email" name="email" placeholder="" required="" />
 									</div>	
-									<!-- <div class="gaps">
+									<div class="gaps">
 									<p>Symptoms</p>
-											<textarea name="About Symptoms" placeholder="" required="" ></textarea>
-									</div> -->
+											<textarea name="symptoms" placeholder="" required="" ></textarea>
+									</div>
 								</div>
 								<div class="right-agileinfo same">
-                                    <div class="gaps">
-                                        <p>Password</p>
-                                                <input type="email" name="email" placeholder="" required="" />
-                                        </div>	
-								<!-- <div class="gaps">
-									<p>Department</p>	
-										<select class="option">
+								<div class="gaps">
+									<p>Select Date</p>		
+											<input  id="datepicker1" name="date" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'mm/dd/yyyy';}" required="">
+								</div>
+								<div class="gaps">
+									<p>Services</p>	
+										<select class="option" name="service">
 											<option></option>
-											<option>Cardiology</option>
-											<option>Ophthalmology</option>
-											<option>Neurology</option>
-											<option>Psychology</option>
-											<option>Dermatology</option>
+											<option value="consultation">Consultation</option>
+											
 										</select>
 								</div>
 								<div class="gaps">
 									<p>Gender</p>	
-										<select class="option">
+										<select class="option" name="gender">
 											<option></option>
-											<option>Male</option>
-											<option>Female</option>
+											<option value="male">Male</option>
+											<option value="female">Female</option>
 										</select>
 								</div>
 								<div class="gaps">
 									<p>Time</p>		
-										<input type="text" id="timepicker" name="Time" class="timepicker option" value="">	
-								</div> -->
+										<input type="text" id="timepicker" name="time" class="timepicker option" value="">	
+								</div>
 								</div>
 								<div class="clearfix"></div>
-											  <input type="submit" onclick="myFunction1()" value="login">
-                                </form>
-                                <div style="margin-top: 40px; text-align: center;">
-									<input type="submit" value="Don’t have an account? Sign Up" onclick="location.href='pportal.html'">
-									
-								</div>
+											  <input type="submit" name="submit" value="Make an Appointment">
+								</form>
 							</div>
 					   </div>
 
@@ -175,29 +217,25 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 <!-- footer -->
 	<div class="footer">
 		<div class="container">
-			<h4>Subscribe to <span>Newsletter</span></h4>
-			<form action="#" method="post">
-				<input type="email" name="Email" placeholder="Enter Your Email..." required="">
-				<input type="submit" value="Send">
-			</form>
+			
 			<div class="agile_footer_copy">
 				<div class="w3agile_footer_grids">
 					<div class="col-md-4 w3agile_footer_grid">
 						<h3>About Us</h3>
-						<p>Avi-pra Healthcare<span>Healthcare IT Solution</span></p>
+						<p>ReDHealth<span>Redefined Digital Health</span></p>
 					</div>
 					<div class="col-md-4 w3agile_footer_grid">
 						<h3>Contact Info</h3>
 						<ul>
-							<li><i class="fa fa-map-marker" aria-hidden="true"></i>UIT Burdwan,<span>Burdwan, West Bengal.</span></li>
-							<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:er.vikashs4@gmail.com">er.vikashs4@gmail.com</a></li>
-							<li><i class="fa fa-phone" aria-hidden="true"></i>+91 9199642838</li>
+							<li><i class="fa fa-map-marker" aria-hidden="true"></i>HOPin Academy,<span>Water Works Road, Tamale.</span></li>
+							<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:redhealthgtl@gmail.com">redhealthgtl@gmail.com</a></li>
+							<li><i class="fa fa-phone" aria-hidden="true"></i>+233 545510351</li>
 						</ul>
 					</div>
 					<div class="col-md-4 w3agile_footer_grid w3agile_footer_grid1">
 						<h3>Navigation</h3>
 						<ul>
-							<li><span class="fa fa-long-arrow-right" aria-hidden="true"></span><a href="gallery.html">Department</a></li>
+							<li><span class="fa fa-long-arrow-right" aria-hidden="true"></span><a href="gallery.html">gallery</a></li>
 							<li><span class="fa fa-long-arrow-right" aria-hidden="true"></span><a href="appointment.html">Appointment</a></li>
 							<li><span class="fa fa-long-arrow-right" aria-hidden="true"></span><a href="about.html">About</a></li>
 							<li><span class="fa fa-long-arrow-right" aria-hidden="true"></span><a href="contact.html">Contact Us</a></li>
@@ -208,7 +246,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 			</div>
 			<div class="w3_agileits_copy_right_social">
 				<div class="col-md-6 agileits_w3layouts_copy_right">
-					<p>&copy; 2019 Avi-pra Healthcare. All rights reserved.</p>
+					<p>&copy; 2020 ReDHealth. All rights reserved.</p>
 				</div>
 				<div class="col-md-6 w3_agile_copy_right">
 					<ul class="agileits_social_list">

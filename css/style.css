@@ -384,7 +384,7 @@ ul.top_agile_w3l_info_icons i {
 	min-height:700px;
 }
 .w3layouts-banner-top2{
-	background: url(../images/banner3.jpg) no-repeat 0px 0px;
+	background: url(../images/banner3.png) no-repeat 0px 0px;
     background-size: cover;	
 	-webkit-background-size: cover;	
 	-moz-background-size: cover;
@@ -663,7 +663,7 @@ h5.w3l-subtitle {
 
 /*--//agile_bottom --*/
 .stats_inner{
-    background: url(../images/banner3.jpg)no-repeat 0px 0px;
+    background: url(../images/banner3.png)no-repeat 0px 0px;
     background-size: cover;
     z-index: 999;
     padding-top: 6em;
